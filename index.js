@@ -45,7 +45,7 @@ sequelize.sync()
   });
 
 
-  // Create a new product
+// Create a new product
 app.post('/products', async (req, res) => {
     try {
       const { name, price, quantity } = req.body;
@@ -55,7 +55,7 @@ app.post('/products', async (req, res) => {
       }
   
       const product = await Product.create({ name, price, quantity });
-      res.status(201).json(product);
+      res.status(201).json({ success: true, message: 'Product created successfully', product });
     } catch (err) {
       console.error('Error creating product:', err);
       res.status(500).json({ error: 'Internal server error' });
@@ -66,7 +66,7 @@ app.post('/products', async (req, res) => {
   app.get('/products', async (req, res) => {
     try {
       const products = await Product.findAll();
-      res.json(products);
+      res.json({ success: true, message: 'Products retrieved successfully', products });
     } catch (err) {
       console.error('Error retrieving products:', err);
       res.status(500).json({ error: 'Internal server error' });
@@ -80,10 +80,10 @@ app.post('/products', async (req, res) => {
       const product = await Product.findByPk(productId);
   
       if (!product) {
-        return res.status(404).json({ error: 'Product not found' });
+        return res.status(404).json({ error: 'No product found with this id' });
       }
   
-      res.json(product);
+      res.json({ success: true, message: 'Product retrieved successfully', product });
     } catch (err) {
       console.error('Error retrieving product:', err);
       res.status(500).json({ error: 'Internal server error' });
@@ -99,12 +99,12 @@ app.post('/products', async (req, res) => {
       const product = await Product.findByPk(productId);
   
       if (!product) {
-        return res.status(404).json({ error: 'Product not found' });
+        return res.status(404).json({ error: 'No product found with this id' });
       }
   
       await Product.update({ name, price, quantity }, { where: { id: productId } });
   
-      res.json({ message: 'Product updated successfully' });
+      res.json({ success: true, message: 'Product updated successfully' });
     } catch (err) {
       console.error('Error updating product:', err);
       res.status(500).json({ error: 'Internal server error' });
@@ -118,18 +118,18 @@ app.post('/products', async (req, res) => {
       const product = await Product.findByPk(productId);
   
       if (!product) {
-        return res.status(404).json({ error: 'Product not found' });
+        return res.status(404).json({ error: 'No product found with this id' });
       }
   
       await Product.destroy({ where: { id: productId } });
   
-      res.json({ message: 'Product deleted successfully' });
+      res.json({ success: true, message: 'Product deleted successfully' });
     } catch (err) {
       console.error('Error deleting product:', err);
       res.status(500).json({ error: 'Internal server error' });
     }
   });
-  
+    
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
