@@ -13,15 +13,16 @@ app.use(bodyParser.json());
 
 // Azure SQL database connection settings
 const sqlConfig = {
-    user: 'myadmin', // Replace with your Azure SQL database username
-    password: 'null', // Replace with your Azure SQL database password
-    server: 'pulaobiryani.database.windows.net', // Replace with your Azure SQL server name
-    port: 1433,
-    database: 'products', // Replace with your Azure SQL database name
-    options: {
+    user: 'process.env.USERNAME', 
+    password: 'process.env.PASSWORD',
+    server: 'process.env.SERVER', 
+    port: process.env.PORT,	
+    database: 'process.env.DATABASE', 
+    options: {	
         encrypt: true
     }
 };
+
 
 // Define Product model using Sequelize
 const sequelize = new Sequelize(sqlConfig.database, sqlConfig.user, sqlConfig.password, {
